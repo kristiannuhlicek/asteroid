@@ -15,16 +15,29 @@ def main():
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
-    player = Player(x, y, PLAYER_RADIUS)
+
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+
+    player = Player(x, y)
+
+
 
     while(True):
         for event in pygame.event.get(): # makes the game quit with the x button
             if event.type == pygame.QUIT:
                 return
+        
+        for o in updatable:
+            o.update(dt)
+
         pygame.Surface.fill(screen, (0,0,0))
-        player.draw(screen)
+        for o in drawable:
+            o.draw(screen)
         pygame.display.flip()
         
+        # limits the framerate to 60 fps
         dt = clock.tick(60) / 1000
     
 
